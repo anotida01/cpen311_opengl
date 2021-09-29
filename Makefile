@@ -57,7 +57,7 @@
 ##==========================================================================
 
 # The pre-processor and compiler options.
-MY_CFLAGS =
+MY_CFLAGS = -lGL -lglut -lGLU -lm 
 
 # The linker options.
 MY_LIBS   =
@@ -88,7 +88,7 @@ HDREXTS = .h .H .hh .hpp .HPP .h++ .hxx .hp
 
 # The pre-processor and compiler options.
 # Users can override those variables from the command line.
-CFLAGS  = -g -O2 -lGL -lglut -lGLU -lm 
+CFLAGS  = -g -O2
 CXXFLAGS= -g -O2
 
 # The C program compiler.
