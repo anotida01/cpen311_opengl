@@ -31,9 +31,17 @@ void screenfill(){
     return;
 }
 
+// parameters to drawCircle
+int CENTRE_X = 80;
+int CENTRE_Y = 60;
+int RADIUS = 40;
 
 // Task 3 - Bresenham Circle Algorithm
-void drawCircle(int centre_x, int centre_y, int radius){
+void drawCircle(){
+
+    int centre_x = CENTRE_X; 
+    int centre_y = CENTRE_Y;
+    int radius = RADIUS;
 
     int offset_y = 0;
     int offset_x = radius;
@@ -41,42 +49,33 @@ void drawCircle(int centre_x, int centre_y, int radius){
 
     int unsigned vga_x, vga_y;
 
-    pixel c = {.red = 0, .green = 1, .blue = 0}; // green pixel
+    pixel p = {.red = 0, .green = 1, .blue = 0}; // green pixel
 
     while (offset_y <= offset_x){
-        
-        // point(centre_x + offset_x, centre_y + offset_y, &c); // octant 1
-        // point(centre_x + offset_y, centre_y + offset_x, &c); // octant 2
-        // point(centre_x - offset_x, centre_y + offset_y, &c); // octant 3
-        // point(centre_x - offset_y, centre_y + offset_x, &c); // octant 3
-        // point(centre_x - offset_x, centre_y - offset_y, &c); // octant 5
-        // point(centre_x - offset_y, centre_y - offset_x, &c); // octant 6
-        // point(centre_x + offset_x, centre_y - offset_y, &c); // octant 8
-        // point(centre_x + offset_y, centre_y - offset_x, &c); // octant 7
 
         vga_y = centre_y + offset_y; vga_x = centre_x + offset_x; // octant 1
-        if (vga_x < H_SIZE && vga_y < V_SIZE) FRAMEBUFFER[vga_y][vga_x] = c;
+        fb_write(vga_x, vga_y, &p);
 
         vga_y = centre_y + offset_x; vga_x = centre_x + offset_y; // octant 2
-        if (vga_x < H_SIZE && vga_y < V_SIZE) FRAMEBUFFER[vga_y][vga_x] = c;
+        fb_write(vga_x, vga_y, &p);
 
         vga_y = centre_y + offset_y; vga_x = centre_x - offset_x; // octant 4
-        if (vga_x < H_SIZE && vga_y < V_SIZE) FRAMEBUFFER[vga_y][vga_x] = c;
+        fb_write(vga_x, vga_y, &p);
    
         vga_y = centre_y + offset_x; vga_x = centre_x - offset_y; // octant 3
-        if (vga_x < H_SIZE && vga_y < V_SIZE) FRAMEBUFFER[vga_y][vga_x] = c;
+        fb_write(vga_x, vga_y, &p);
 
         vga_y = centre_y - offset_y; vga_x = centre_x - offset_x; // octant 5
-        if (vga_x < H_SIZE && vga_y < V_SIZE) FRAMEBUFFER[vga_y][vga_x] = c;
+        fb_write(vga_x, vga_y, &p);
 
         vga_y = centre_y - offset_x; vga_x = centre_x - offset_y; // octant 6
-        if (vga_x < H_SIZE && vga_y < V_SIZE) FRAMEBUFFER[vga_y][vga_x] = c;
+        fb_write(vga_x, vga_y, &p);
 
         vga_y = centre_y - offset_y; vga_x = centre_x + offset_x; // octant 8
-        if (vga_x < H_SIZE && vga_y < V_SIZE) FRAMEBUFFER[vga_y][vga_x] = c;
+        fb_write(vga_x, vga_y, &p);
 
         vga_y = centre_y - offset_x; vga_x = centre_x + offset_y; // octant 7
-        if (vga_x < H_SIZE && vga_y < V_SIZE) FRAMEBUFFER[vga_y][vga_x] = c;
+        fb_write(vga_x, vga_y, &p);
 
         offset_y = offset_y + 1;
         if (crit <= 0)

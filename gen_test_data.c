@@ -64,9 +64,9 @@ void __gl_display() {
         (*fun_ptr)();
     }
     else if (FUNCTION == 2){
-        void (*fun_ptr)(int, int, int);
+        void (*fun_ptr)(void);
         fun_ptr = ALGORITHMS[1].function_addr;
-        (*fun_ptr)(80, 60, 40);
+        (*fun_ptr)();
     }
 
 

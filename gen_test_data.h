@@ -36,7 +36,7 @@ void initGL(int argc, char** argv);
 void write_arr_to_file(char** array);
 void cleanup();
 int parse_args(int argc, char** argv);
-void drawCircle(int centre_x, int centre_y, int radius);
+void drawCircle();
 void reuleaux_triangle(int centre_x, int centre_y, int diameter);
 void drawCircle_t4(int centre_x, int centre_y, int radius, int* c_x, int* c_y, int mode);
 char should_plot(int mode, int* c_x, int* c_y, int unsigned vga_x, int unsigned vga_y);
