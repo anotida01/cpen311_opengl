@@ -1,14 +1,17 @@
 #include "gen_test_data.h"
+#include "dog.h"
 #include <math.h>
 
 // register your algorithms here!
-int NUM_ALGORITHMS = 2;
+int NUM_ALGORITHMS = 3;
 algorithm ALGORITHMS[] = {
         {.number = 0, .function_addr = &screenfill},
-        {.number = 1, .function_addr = &drawCircle}
+        {.number = 1, .function_addr = &drawCircle},
+        {.number = 2, .function_addr = &dog}
+        // {.number = , .function_addr = &}
     };
 
-// Task 2 - Fill the screen
+// Fill the screen with colours
 void screenfill(){
 
     char colour_byte;
@@ -23,12 +26,25 @@ void screenfill(){
             p.green = (colour_byte & (1 << 1)) ? 1 : 0;
             p.blue  = (colour_byte & (1 << 0)) ? 1 : 0;
 
-            // point(x, y, &c);
-            // FRAMEBUFFER[y][x] = p;
             fb_write(x, y, &p);
         }
 
     return;
+}
+
+// Draw a dog!
+void dog(){
+
+    pixel p = {.red = 1, .green = 1, .blue = 0};
+
+    for (int i = 0; i < DOG_NUM; i++){
+        unsigned char x = DOG[i][0];
+        unsigned char y = DOG[i][1];
+        fb_write(x, y, &p);
+    }
+
+    return;
+
 }
 
 // parameters to drawCircle
@@ -36,7 +52,7 @@ int CENTRE_X = 80;
 int CENTRE_Y = 60;
 int RADIUS = 40;
 
-// Task 3 - Bresenham Circle Algorithm
+// Bresenham Circle Algorithm
 void drawCircle(){
 
     int centre_x = CENTRE_X; 

@@ -1,5 +1,4 @@
 /*
-    File:       gen_test_data.h
     Purpose:    Header file for gen_test_data.c
     Author:     anotida01@github.com
 */
@@ -18,8 +17,7 @@ typedef struct algorithm{
     void* function_addr;
 }algorithm;
 
-extern algorithm ALGORITHMS[];
-
+// Vertical & Horizontal sizes in pixels
 #define V_SIZE  120
 #define H_SIZE  160
 
@@ -27,18 +25,21 @@ extern algorithm ALGORITHMS[];
 // FRAMEBUFFER is organized to mirror VGA screen orientation
 extern pixel** FRAMEBUFFER;
 extern int FUNCTION; // used to indicate which function will be run
+extern algorithm ALGORITHMS[];
 
-void __gl_point(int x, int y, pixel* p);
-int fb_write (int x, int y, pixel *p);
+// EDIT HERE - ALGORITHMS
 void screenfill();
-void display();
-void initGL(int argc, char** argv);
-void write_arr_to_file(char** array);
-void cleanup();
-int parse_args(int argc, char** argv);
+void dog();
 void drawCircle();
-void reuleaux_triangle(int centre_x, int centre_y, int diameter);
-void drawCircle_t4(int centre_x, int centre_y, int radius, int* c_x, int* c_y, int mode);
-char should_plot(int mode, int* c_x, int* c_y, int unsigned vga_x, int unsigned vga_y);
+
+int fb_write (int x, int y, pixel *p);
+
+// Internal functions
+int __parse_args(int argc, char** argv);
+void __gl_display();
+void __initGL(int argc, char** argv);
+void __gl_point(int x, int y, pixel* p);
+void __write_arr_to_file(char** array);
+void __cleanup();
 
 #endif

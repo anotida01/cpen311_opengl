@@ -1,22 +1,23 @@
 /*
-    File:       gen_test_data.c
-    Purpose:    Create & vizualize testing data for Tasks 2, 3, 4
+    Purpose:    Create & vizualize graphics algorithms
     Author:     anotida01@github.com
     Compilation: gcc -lGL -lglut -lGLU -lm gen_test.data.c -o gen_test_data
 */
+
+// TODO: make a proper argument parser
 
 #include <stdio.h>
 #include <GL/glut.h>
 #include <math.h>
 #include "gen_test_data.h"
 
-#define OUTFLE_NAME "task3.memh"
+#define OUTFLE_NAME "out.memh"
 
 // FRAMEBUFFER[y][x] - y coord is row in array, x coord is column in array
 // FRAMEBUFFER is organized to mirror VGA screen orientation
 pixel** FRAMEBUFFER;
 int FUNCTION; // used to indicate which function will be run
-
+extern int NUM_ALGORITHMS; // the number of registred algorithms
 
 // write pixel to framebuffer
 int fb_write (int x, int y, pixel *p){
@@ -29,6 +30,7 @@ int fb_write (int x, int y, pixel *p){
         printf("[%d][%d] is out of bounds!\n", x, y);
     return status;
 }
+
 
 // draw a single point to openGL
 inline void __gl_point(int x, int y, pixel* p){
@@ -51,24 +53,19 @@ inline void __gl_point(int x, int y, pixel* p){
 
 }
 
+
 // paint the contents of the framebuffer with an algorithm
 void __gl_display() {
     glClearColor(0.5f, 0.5f, 0.5f, 0.0f); // Set OpenGL background color
     glClear(GL_COLOR_BUFFER_BIT);         // Clear OpenGL colour buffer (background)
 
-
-    // populate frambuffer with an algorithm
-    if (FUNCTION == 1){
+    if (FUNCTION <= NUM_ALGORITHMS){
         void (*fun_ptr)(void);
-        fun_ptr = ALGORITHMS[0].function_addr;
+        fun_ptr = ALGORITHMS[FUNCTION-1].function_addr;
         (*fun_ptr)();
+    }else{
+        printf("Function number [%d] does not exist.", FUNCTION);
     }
-    else if (FUNCTION == 2){
-        void (*fun_ptr)(void);
-        fun_ptr = ALGORITHMS[1].function_addr;
-        (*fun_ptr)();
-    }
-
 
     // loop through framebuffer and draw to OpenGL
     for (size_t x = 0; x < H_SIZE; x++)
@@ -91,22 +88,22 @@ void __gl_display() {
 
 // convert software framebuffer to VGA core testbench format
 // char** vga_colour_array must be V_SIZE x H_SIZE array
-void convert_fb_to_vga(char** vga_colour_array){
+void __convert_fb_to_vga(char** vga_colour_array){
     char vga_colour_byte;
 
     for (size_t x = 0; x < H_SIZE; x++)
         for (size_t y = 0; y < V_SIZE; y++){
             vga_colour_byte = 0;
 
-            vga_colour_byte |= (FRAMEBUFFER[y][x].red > 0.1f)   ? (1 << 2) : 0;
-            vga_colour_byte |= (FRAMEBUFFER[y][x].green > 0.1f) ? (1 << 1) : 0;
-            vga_colour_byte |= (FRAMEBUFFER[y][x].blue > 0.1f)  ? (1 << 0) : 0;
+            vga_colour_byte |= (FRAMEBUFFER[y][x].red > 0)   ? (1 << 2) : 0;
+            vga_colour_byte |= (FRAMEBUFFER[y][x].green > 0) ? (1 << 1) : 0;
+            vga_colour_byte |= (FRAMEBUFFER[y][x].blue > 0)  ? (1 << 0) : 0;
 
             vga_colour_array[y][x] = vga_colour_byte;            
 
         }
 
-    write_arr_to_file(vga_colour_array);
+    __write_arr_to_file(vga_colour_array);
         
     return;    
 
@@ -114,7 +111,7 @@ void convert_fb_to_vga(char** vga_colour_array){
 
 
 // write array to .memh format file
-void write_arr_to_file(char** array){
+void __write_arr_to_file(char** array){
 
     FILE* outfile = fopen(OUTFLE_NAME, "w+");
     char byte_str[3];
@@ -137,7 +134,7 @@ void write_arr_to_file(char** array){
 
 
 // Initialize Window & Canvas
-void initGL(int argc, char** argv){
+void __initGL(int argc, char** argv){
     glutInit(&argc, argv);                 // Initialize GLUT
     glutCreateWindow("OpenGL Window"); // Create a window with the given title
     glutInitWindowSize(500, 500);   // Set the window's initial width & height
@@ -145,14 +142,14 @@ void initGL(int argc, char** argv){
     glutDisplayFunc(__gl_display); // Register display callback handler for window re-paint
 
     // setup canvas to match VGA Co-ord system
-    gluOrtho2D(-10, 170.0, 130.0, -10);
+    gluOrtho2D(-10, H_SIZE+10, V_SIZE+10, -10);
 
     return;
 }
 
 
 // writes FRAMEBUFFER to OUTFILE and frees all memory allocations
-void cleanup(){
+void __cleanup(){
     printf("OpenGL/GLUT exited. Cleaning Up Program\n");
 
     // setup outfile array 
@@ -162,7 +159,7 @@ void cleanup(){
     }
 
     // convert FRAMEBUFFER to testbench format
-    convert_fb_to_vga(vga_colour_array);
+    __convert_fb_to_vga(vga_colour_array);
 
     // free all allocated memory
     for (size_t i = 0; i < V_SIZE; i++){
@@ -174,8 +171,9 @@ void cleanup(){
     return;
 }
 
+
 // Find out which algorithm should be run
-int parse_args(int argc, char** argv){
+int __parse_args(int argc, char** argv){
     int func = 0;
     if (argc > 1){
         if (argv[1][0] == '1')
@@ -189,11 +187,9 @@ int parse_args(int argc, char** argv){
     }
     else if (argc == 1){
         printf("Syntax is: %s <FUNC_NUM>\n", argv[0]);
-        printf("FUNC_NUMS:\n 1 (Task 2)\n 2 (Task 3)\n 3 (Task 4)\n");
+        printf("Using Default FUNC_NUM=1\n");
         func = 1;
     }
-
-    printf("Running Task %d\n", func + 1);
 
     return func;
 }
@@ -202,7 +198,7 @@ int parse_args(int argc, char** argv){
 int main(int argc, char** argv){
 
     // find out which algorithm to run
-    FUNCTION = parse_args(argc, argv);
+    FUNCTION = __parse_args(argc, argv);
 
     int frame_buff_size = 0;
 
@@ -218,10 +214,10 @@ int main(int argc, char** argv){
     printf("Framebuffer is %d bytes\n", frame_buff_size);
 
     // register cleanup() to be called when exiting
-    atexit(cleanup);
+    atexit(__cleanup);
 
     // initialize OpenGL/GLUT and enter main loop
-    initGL(argc, argv);    
+    __initGL(argc, argv);    
     glutMainLoop();
 
     return 0;
