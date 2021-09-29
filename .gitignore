@@ -1,0 +1,7 @@
+*.o
+*.d
+*.memh
+.vscode/
+
+# executable
+cpen311_opengl
