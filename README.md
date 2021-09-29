@@ -1,10 +1,10 @@
 # CPEN311 - OpenGL Debugging
 
-![opengl](opengl.png)
-
 A useful debugging tool for versions of the UBC CPEN 311 course that offer the Pixel Transformation Lab.
 
-It's a program that allows for visualization of graphics algorithms using OpenGL.  
+![opengl](opengl.png)
+
+It's an OpenGL program that allows for easy visualization of graphics algorithms before they turned into hardware.  
 It also generates framebuffer test data in the .memh format used by ModelSim allowing the results to be incorporated into a testbench.
 
 ## Building
