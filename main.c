@@ -9,7 +9,7 @@
 #include <stdio.h>
 #include <GL/glut.h>
 #include <math.h>
-#include "gen_test_data.h"
+#include "main.h"
 
 #define OUTFLE_NAME "out.memh"
 

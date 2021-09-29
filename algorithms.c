@@ -1,4 +1,4 @@
-#include "gen_test_data.h"
+#include "main.h"
 #include "dog.h"
 #include <math.h>
 
