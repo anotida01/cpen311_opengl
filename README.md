@@ -19,7 +19,7 @@ make all
 ```
 ## Usage
 
-Graphics algorithms are implemented in algorithms.c. Follow the examples in that file to add new algorithms.
+Graphics algorithms are implemented in [algorithms.c](algorithms.c). Follow the examples in that file to add new algorithms.
 
 When running the executable, pass the function number as a parameter
 ```bash
