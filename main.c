@@ -59,14 +59,22 @@ void __gl_display() {
     glClearColor(0.5f, 0.5f, 0.5f, 0.0f); // Set OpenGL background color
     glClear(GL_COLOR_BUFFER_BIT);         // Clear OpenGL colour buffer (background)
 
-    if (FUNCTION <= NUM_ALGORITHMS){
-        void (*fun_ptr)(void);
-        fun_ptr = ALGORITHMS[FUNCTION-1].function_addr;
-        (*fun_ptr)();
-    }else{
-        printf("Function number [%d] does not exist.", FUNCTION);
+    char func_found = 0;
+    for (size_t i = 0; i < NUM_ALGORITHMS; i++){
+        if (ALGORITHMS[i].number == FUNCTION){
+            func_found = 1;
+            void (*func_ptr)(void);
+            func_ptr = ALGORITHMS[i].function_addr;
+            (*func_ptr)();
+            break;
+        }
     }
-
+    
+    if (!(func_found)) {
+        printf("Function number [%d] does not exist.\n", FUNCTION);
+        exit(1);
+    }
+    
     // loop through framebuffer and draw to OpenGL
     for (size_t x = 0; x < H_SIZE; x++)
         for (size_t y = 0; y < V_SIZE; y++)
@@ -176,21 +184,13 @@ void __cleanup(){
 int __parse_args(int argc, char** argv){
     int func = 0;
     if (argc > 1){
-        if (argv[1][0] == '1')
-            func = 1;
-        else if (argv[1][0] == '2')
-            func = 2;
-        else if (argv[1][0] == '3')
-            func = 3;
-        else
-            func = 1;
+        func = atoi(argv[1]);
     }
     else if (argc == 1){
         printf("Syntax is: %s <FUNC_NUM>\n", argv[0]);
-        printf("Using Default FUNC_NUM=1\n");
-        func = 1;
+        printf("Using Default FUNC_NUM=0\n");
+        func = 0;
     }
-
     return func;
 }
 

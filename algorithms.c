@@ -35,7 +35,7 @@ void screenfill(){
 // Draw a dog!
 void dog(){
 
-    pixel p = {.red = 1, .green = 1, .blue = 0};
+    pixel p = {.red = 1, .green = 1, .blue = 1};
 
     for (int i = 0; i < DOG_NUM; i++){
         unsigned char x = DOG[i][0];
