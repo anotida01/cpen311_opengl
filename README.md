@@ -21,7 +21,7 @@ make all
 
 Graphics algorithms are implemented in [algorithms.c](algorithms.c). Follow the examples in that file to add new algorithms.
 
-When running the executable, pass the function number as a argument
+When running the executable, pass the function number as an argument.
 ```bash
 ./cpen311_opengl 2 #this will run the function registered with number=2
 ```
