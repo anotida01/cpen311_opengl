@@ -1,6 +1,6 @@
 # CPEN311 - OpenGL Debugging
 
-A useful debugging tool for versions of the UBC CPEN 311 course that offer the Pixel Transformation Lab.
+A useful debugging tool for the Pixel Transformation Lab offered by some versions of the UBC CPEN 311 course.
 
 ![opengl](opengl.png)
 
@@ -11,7 +11,7 @@ It also generates framebuffer test data in the .memh format used by ModelSim all
 
 This program utilizes freeglut which Mesa depends on. So if you have Mesa installed, you're probably all set.  
 I haven't tried porting it to Windows yet.  
-The build, run the following commands:
+To build, run the following commands:
 ```bash
 git clone https://github.com/anotida01/cpen311_opengl
 cd cpen311_opengl/
@@ -21,9 +21,9 @@ make all
 
 Graphics algorithms are implemented in [algorithms.c](algorithms.c). Follow the examples in that file to add new algorithms.
 
-When running the executable, pass the function number as a parameter
+When running the executable, pass the function number as a argument
 ```bash
-./cpen311_opengl 2 #this will run the 2nd registered function
+./cpen311_opengl 2 #this will run the function registered with number=2
 ```
 
-Custom runtime parameters (to the algorithm) are not supported.
+Custom runtime arguments (to the algorithm) are not supported.
